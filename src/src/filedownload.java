@@ -25,16 +25,23 @@ public class filedownload extends javax.swing.JFrame {
         setTitle("File Save");
         setLocation(100, 75);
         file = f.filelist();
-        //file = "2_ffdd,2_dsfdg,2_dfgdfdf,fdgdfg,dfgdfgd,dfgfdfg";
-        flist = file.split(",");
-        System.out.println("length is" + flist.length);
-        filelist = file.split(",");
-        for (int i = 0; i < flist.length; i++) {
-            int t = flist[i].indexOf("_");
-            filelist[i] = flist[i].substring(t + 1, flist[i].length());
-        }
+       if(file.length() != 0)
+       {
+            flist = file.split(",");
+            System.out.println("length is" + flist.length);
+            filelist = file.split(",");
+            for (int i = 0; i < flist.length; i++) {
+                int t = flist[i].indexOf("_");
+                filelist[i] = flist[i].substring(t + 1, flist[i].length());
+            }
 
-        jList1.setListData(filelist);
+            jList1.setListData(filelist);
+        }
+        else
+        {
+            jLabel3.setText("No file is uploaded.");
+            jList1.setEnabled(false);
+        }
         jButton1.setEnabled(false);
     }
 
@@ -54,6 +61,7 @@ public class filedownload extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -88,6 +96,9 @@ public class filedownload extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -98,7 +109,9 @@ public class filedownload extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(23, 23, 23)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -117,7 +130,10 @@ public class filedownload extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,6 +223,7 @@ public class filedownload extends javax.swing.JFrame {
     protected javax.swing.JButton jButton2;
     protected javax.swing.JLabel jLabel1;
     protected javax.swing.JLabel jLabel2;
+    protected javax.swing.JLabel jLabel3;
     protected javax.swing.JList jList1;
     protected javax.swing.JPanel jPanel1;
     protected javax.swing.JScrollPane jScrollPane1;

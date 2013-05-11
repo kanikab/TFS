@@ -486,30 +486,30 @@ public class Registration extends javax.swing.JFrame {
         char[] t = jPasswordField2.getPassword();
         String pwd1 = new String(t);
         String pwd2 = new String(jPasswordField3.getPassword());
-        if (Validations.blankValidation(jTextField2.getText())) {
+        if (f.blankValidation(jTextField2.getText())) {
             errorMsg = errorMsg + "\n" + jTextField2.getName() + " cannot be blank";
         }
-        if (Validations.blankValidation(jTextField3.getText())) {
+        if (f.blankValidation(jTextField3.getText())) {
             errorMsg = errorMsg + "\n" + jTextField3.getName() + " cannot be blank";
         }
-        if (Validations.blankValidation(jTextField4.getText())) {
+        if (f.blankValidation(jTextField4.getText())) {
             errorMsg = errorMsg + "\n" + jTextField4.getName() + " cannot be blank";
-        } else if (Validations.emailValidation(jTextField4.getText())) {
+        } else if (f.emailValidation(jTextField4.getText())) {
             errorMsg = errorMsg + "\n" + "Please enter a valid email";
             jTextField4.setText(null);
         }
-        if (Validations.blankValidation(pwd1)) {
+        if (f.blankValidation(pwd1)) {
             errorMsg = errorMsg + "\n" + jPasswordField2.getName() + " cannot be blank";
         }
-        if (Validations.blankValidation(pwd2)) {
+        if (f.blankValidation(pwd2)) {
             errorMsg = errorMsg + "\n" + jPasswordField3.getName() + " cannot be blank";
         }
-        if (!(Validations.blankValidation(pwd1) && Validations.blankValidation(pwd2))) {
+        if (!(f.blankValidation(pwd1) && f.blankValidation(pwd2))) {
             if (!pwd1.equals(pwd2)) {
                 errorMsg = errorMsg + "\n" + "Password donot match";
                 jPasswordField2.setText(null);
                 jPasswordField3.setText(null);
-            } else if (Validations.passwordValidation(pwd1)) {
+            } else if (f.passwordValidation(pwd1)) {
                 errorMsg = errorMsg + "\nPassword should be atleast 8 characters and should contain alphabets, digits and special character [@#*=!]";
                 jPasswordField2.setText(null);
                 jPasswordField3.setText(null);

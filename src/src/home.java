@@ -267,6 +267,7 @@ public class home extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        f.deleteusername();
         dispose();
         new login();
     }//GEN-LAST:event_jButton6ActionPerformed
