@@ -238,11 +238,16 @@ public class functions {
     
     protected void deleteusername()
     {
-       File file = new File("C:\\Temp\\userdetails.txt");
+       File file = new File("C:\\Temp\\userfile.txt");
        if(file.exists())
        {
         boolean filedelete = file.delete();       
         System.out.println("file deleted"+filedelete);
        }
+    }
+    
+    protected void deletefile()
+    {
+        System.out.println("Deletion");
     }
 }
