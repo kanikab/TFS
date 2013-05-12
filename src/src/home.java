@@ -310,6 +310,7 @@ public class home extends javax.swing.JFrame {
         //jList1.setVisible(true);
         String filelist = "";
         filelist = f.filelist();
+        System.out.println(filelist+"gggg");
         String[] flist = filelist.split(",");
         int t = 0;
         for (int i = 0; i < flist.length; i++) {
@@ -341,7 +342,6 @@ public class home extends javax.swing.JFrame {
                 flist[i] = flist[i].substring(t + 1, flist[i].length());
             }
             jList1.setListData(flist);
-            //String[]k = {"kanika"};
         } else {
             JOptionPane.showMessageDialog(this, "No file has been uploaded");
         }
@@ -360,16 +360,18 @@ public class home extends javax.swing.JFrame {
                 String name = filelist[i].toString();
                 int del = JOptionPane.showConfirmDialog(this, " Do you want to Delete the file " + name);
                 if (del == 0) {
-                   f.deletefile();
+                   f.deletefile(name);
                 }
-                else
-                    //jList1.s
-
             }
 
         } else {
             jButton8.setEnabled(false);
         }
+        String flist = f.filelist();
+        String[] file = flist.split(",");
+        jList1.setListData(file);
+        if(flist.length() == 0)
+            jButton8.setEnabled(false);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**

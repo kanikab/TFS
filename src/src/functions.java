@@ -126,7 +126,7 @@ public class functions {
         try {
             int t = 0;
             String userid = readusername();
-            String url = "http://kanikabhatia-photos.com/Team_File_Share/tempfilelist.php?userid=" + "kanikabhtia@gmail.com";
+            String url = "http://kanikabhatia-photos.com/Team_File_Share/tempfilelist.php?userid=" + userid;
             HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(url).openConnection();
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setRequestMethod("POST");
@@ -136,6 +136,7 @@ public class functions {
             while ((s = in.readLine()) != null) {
                 ret = ret + s;
             }
+
             in.close();
 
         } catch (MalformedURLException ex) {
@@ -160,9 +161,20 @@ public class functions {
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setRequestMethod("POST");
             OutputStream os = httpUrlConnection.getOutputStream();
-            InputStream reader = httpUrlConnection.getInputStream();
-            fname = path + fname;
-            //kanika start
+            BufferedReader in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
+            String s,fn ="";
+            while((s=in.readLine())!= null)
+            {
+                fn = s;
+                System.out.println(s);
+            }
+           String[] temp = fn.split("_");
+            System.out.println(temp[1]);
+            long startTime = System.currentTimeMillis();
+            URL urlfile = new URL("http://kanikabhatia-photos.com/Team_File_Share/uploads/" + fn);
+            urlfile.openConnection();
+            InputStream reader = urlfile.openStream();
+            fname = path+temp[1];
             FileOutputStream writer = new FileOutputStream(fname); //s
             byte[] buffer = new byte[1];
             int totalBytesRead = 0;
@@ -173,14 +185,13 @@ public class functions {
                 buffer = new byte[1];
                 totalBytesRead += bytesRead;
             }
+            long endTime = System.currentTimeMillis();
+            System.out.println("Done. " + (new Integer(totalBytesRead).toString()) + " bytes read (" + (new Long(endTime - startTime).toString()) + " millseconds).\n");
             writer.close();
             reader.close();
-
         } catch (MalformedURLException ex) {
-            System.out.println("Error here");
             Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            System.out.println("Error there");
             Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
         }
         return userRequestedFileName;
@@ -235,19 +246,35 @@ public class functions {
         }
         return false;
     }
-    
-    protected void deleteusername()
-    {
-       File file = new File("C:\\Temp\\userfile.txt");
-       if(file.exists())
-       {
-        boolean filedelete = file.delete();       
-        System.out.println("file deleted"+filedelete);
-       }
+
+    protected void deleteusername() {
+        File file = new File("C:\\Temp\\userfile.txt");
+        if (file.exists()) {
+            boolean filedelete = file.delete();
+            System.out.println("file deleted" + filedelete);
+        }
     }
-    
-    protected void deletefile()
-    {
-        System.out.println("Deletion");
+
+    protected void deletefile(String name) {
+        try {
+            String userid = readusername();
+            String fileName = name;
+            String url = "http://kanikabhatia-photos.com/Team_File_Share/uploads/deleteUpload.php?fname=" + fileName + "&userid=" + userid;
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(url).openConnection();
+            httpUrlConnection.setDoOutput(true);
+            httpUrlConnection.setRequestMethod("POST");
+            OutputStream os = httpUrlConnection.getOutputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
+            String s = null;
+            while ((s = in.readLine()) != null) {
+                System.out.println(s);
+            }
+            in.close();
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
