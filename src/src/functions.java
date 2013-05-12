@@ -162,24 +162,22 @@ public class functions {
             httpUrlConnection.setRequestMethod("POST");
             OutputStream os = httpUrlConnection.getOutputStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
-            String s,fn ="";
-            while((s=in.readLine())!= null)
-            {
+            String s, fn = "";
+            while ((s = in.readLine()) != null) {
                 fn = s;
                 System.out.println(s);
             }
-           String[] temp = fn.split("_");
+            String[] temp = fn.split("_");
             System.out.println(temp[1]);
             long startTime = System.currentTimeMillis();
             URL urlfile = new URL("http://kanikabhatia-photos.com/Team_File_Share/uploads/" + fn);
             urlfile.openConnection();
             InputStream reader = urlfile.openStream();
-            fname = path+temp[1];
+            fname = path + temp[1];
             FileOutputStream writer = new FileOutputStream(fname); //s
             byte[] buffer = new byte[1];
             int totalBytesRead = 0;
             int bytesRead = 0;
-
             while ((bytesRead = reader.read(buffer)) > 0) {
                 writer.write(buffer, 0, bytesRead);
                 buffer = new byte[1];
@@ -271,6 +269,59 @@ public class functions {
             }
             in.close();
 
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void fileBackupDownload() {
+        try {
+            String userid = readusername();
+            String path = "C:\\Users\\Kanika\\Documents\\My_Downloads\\";
+            String url = "http://kanikabhatia-photos.com/Team_File_Share/uploads/backupzip.php?emailid=" + userid;
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(url).openConnection();
+            httpUrlConnection.setDoOutput(true);
+            httpUrlConnection.setRequestMethod("POST");
+            OutputStream os = httpUrlConnection.getOutputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
+            String s = null;
+            s = in.readLine();
+            in.close();
+            os.close();
+
+            long startTime = System.currentTimeMillis();
+            URL urlzip = new URL("http://kanikabhatia-photos.com/Team_File_Share/uploads/" + s);
+            urlzip.openConnection();
+            InputStream reader = urlzip.openStream();
+            path = path + s;
+            FileOutputStream writer = new FileOutputStream(path);
+            byte[] buffer = new byte[1000];
+            int totalBytesRead = 0;
+            int bytesRead = 0;
+            while ((bytesRead = reader.read(buffer)) > 0) {
+                writer.write(buffer, 0, bytesRead);
+                buffer = new byte[1000];
+                totalBytesRead += bytesRead;
+            }
+            long endTime = System.currentTimeMillis();
+            System.out.println("Done. " + (new Integer(totalBytesRead).toString()) + " bytes read (" + (new Long(endTime - startTime).toString()) + " millseconds).\n");
+            writer.close();
+            reader.close();
+
+            url = "http://kanikabhatia-photos.com/Team_File_Share/uploads/deletezip.php?file=" + s;
+            httpUrlConnection = (HttpURLConnection) new URL(url).openConnection();
+            httpUrlConnection.setDoOutput(true);
+            HttpURLConnection.setFollowRedirects(true);
+            httpUrlConnection.setRequestMethod("POST");
+            os = httpUrlConnection.getOutputStream();
+            in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
+            String s1 = null;
+            s1 = in.readLine();
+            System.out.println(s1);
+            in.close();
+            os.close();
         } catch (MalformedURLException ex) {
             Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
