@@ -7,6 +7,7 @@ package src;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -161,32 +162,32 @@ public class functions {
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setRequestMethod("POST");
             OutputStream os = httpUrlConnection.getOutputStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
+            BufferedReader in1 = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
             String s, fn = "";
-            while ((s = in.readLine()) != null) {
+            while ((s = in1.readLine()) != null) {
                 fn = s;
                 System.out.println(s);
             }
             String[] temp = fn.split("_");
             System.out.println(temp[1]);
-            long startTime = System.currentTimeMillis();
-            URL urlfile = new URL("http://kanikabhatia-photos.com/Team_File_Share/uploads/" + fn);
-            urlfile.openConnection();
-            InputStream reader = urlfile.openStream();
+            url = "http://kanikabhatia-photos.com/Team_File_Share/uploads/" + fn;
+            HttpURLConnection urlfile = (HttpURLConnection) new URL(url).openConnection();
+            urlfile.setDoOutput(true);
+            urlfile.setRequestMethod("GET");
+            urlfile.connect();
             fname = path + temp[1];
-            FileOutputStream writer = new FileOutputStream(fname); //s
-            byte[] buffer = new byte[1];
-            int totalBytesRead = 0;
-            int bytesRead = 0;
-            while ((bytesRead = reader.read(buffer)) > 0) {
-                writer.write(buffer, 0, bytesRead);
-                buffer = new byte[1];
-                totalBytesRead += bytesRead;
+            InputStream in = urlfile.getInputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            int i;
+            while ((i = in.read()) != -1) {
+                bos.write(i);
             }
-            long endTime = System.currentTimeMillis();
-            System.out.println("Done. " + (new Integer(totalBytesRead).toString()) + " bytes read (" + (new Long(endTime - startTime).toString()) + " millseconds).\n");
-            writer.close();
-            reader.close();
+            byte[] b = bos.toByteArray();
+            FileOutputStream fos = new FileOutputStream(fname);
+            fos.write(b);
+            fos.close();
+            urlfile.disconnect();
+            
         } catch (MalformedURLException ex) {
             Logger.getLogger(functions.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -291,24 +292,23 @@ public class functions {
             in.close();
             os.close();
 
-            long startTime = System.currentTimeMillis();
-            URL urlzip = new URL("http://kanikabhatia-photos.com/Team_File_Share/uploads/" + s);
-            urlzip.openConnection();
-            InputStream reader = urlzip.openStream();
+            url = "http://kanikabhatia-photos.com/Team_File_Share/uploads/" + s;
+            HttpURLConnection urlfile = (HttpURLConnection) new URL(url).openConnection();
+            urlfile.setDoOutput(true);
+            urlfile.setRequestMethod("GET");
+            urlfile.connect();
             path = path + s;
-            FileOutputStream writer = new FileOutputStream(path);
-            byte[] buffer = new byte[1000];
-            int totalBytesRead = 0;
-            int bytesRead = 0;
-            while ((bytesRead = reader.read(buffer)) > 0) {
-                writer.write(buffer, 0, bytesRead);
-                buffer = new byte[1000];
-                totalBytesRead += bytesRead;
+            InputStream ins = urlfile.getInputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            int i;
+            while ((i = ins.read()) != -1) {
+                bos.write(i);
             }
-            long endTime = System.currentTimeMillis();
-            System.out.println("Done. " + (new Integer(totalBytesRead).toString()) + " bytes read (" + (new Long(endTime - startTime).toString()) + " millseconds).\n");
-            writer.close();
-            reader.close();
+            byte[] b = bos.toByteArray();
+            FileOutputStream fos = new FileOutputStream(path);
+            fos.write(b);
+            fos.close();
+            urlfile.disconnect();
 
             url = "http://kanikabhatia-photos.com/Team_File_Share/uploads/deletezip.php?file=" + s;
             httpUrlConnection = (HttpURLConnection) new URL(url).openConnection();

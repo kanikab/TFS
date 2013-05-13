@@ -369,7 +369,11 @@ public class home extends javax.swing.JFrame {
         }
         String flist = f.filelist();
         String[] file = flist.split(",");
-        jList1.setListData(file);
+         for (int i = 0; i < file.length; i++) {
+                int t = file[i].indexOf("_");
+                file[i] = file[i].substring(t + 1, file[i].length());
+            }
+            jList1.setListData(file);
         if(flist.length() == 0)
             jButton8.setEnabled(false);
     }//GEN-LAST:event_jButton8ActionPerformed
